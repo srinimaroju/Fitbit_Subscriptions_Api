@@ -2,6 +2,7 @@
 require('OAuth2/Client.php');
 require('OAuth2/GrantType/IGrantType.php');
 require('OAuth2/GrantType/AuthorizationCode.php');
+require('Db/Adapter.php');
 
 const CLIENT_ID     = '227HZF';
 const CLIENT_SECRET = '0a856487889789c6f6ca1c691fdd9cc3';
@@ -36,11 +37,12 @@ else
     parse_str($response['result'], $info);
     $client->setAccessToken($info['access_token']);
     //$response = $client->fetch('https://graph.facebook.com/me');
-    if($response['code'] = 200) {
+    if($response['code'] == 200) {
 	var_dump($response, $response['result']);
+        $db_instance = 
     } else {
-	print "some error occured";
-	print_r($response); exit;	
+    	print "some error occured";
+    	print_r($response); exit;	
     }
 
 }
