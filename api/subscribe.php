@@ -34,12 +34,15 @@ else
     //echo "geting token"; exit;
     $response = $client->getAccessToken(TOKEN_ENDPOINT, 'authorization_code', $params);
     
-    parse_str($response['result'], $info);
-    $client->setAccessToken($info['access_token']);
     //$response = $client->fetch('https://graph.facebook.com/me');
     if($response['code'] == 200) {
-	var_dump($response, $response['result']);
-        $db_instance = 
+	
+	$result = $response['result'];
+	$client->setAccessToken($result['access_token']);
+        $db_instance = Db\Adapter::getInstance();
+
+	$db_instance->saveUser($result['user_id'], json_encode($result));
+	print $result['user_id']."persisted sucessfully";
     } else {
     	print "some error occured";
     	print_r($response); exit;	

@@ -5,16 +5,16 @@
 namespace Db;
 class Adapter {
 	private $_adapter = null;
-	const SQLITE_DB_FILENAME = '/usr/share/nginx/data/fitbit_listener';
+	const SQLITE_DB_FILENAME = "/usr/share/nginx/data/fitbit_listener";
 	protected static $_instance; 
 	protected function __construct() {
-		if(!$adapter) {
-			$this->_adapter =  new SQLite3(SQLITE_DB_FILENAME);
+		if(!$this->_adapter) {
+			$this->_adapter =  new \SQLite3(self::SQLITE_DB_FILENAME, SQLITE3_OPEN_READWRITE);
 		}
 	}
 	public static function getInstance() {
 		if (! isset ( self::$_instance )) {
-			self::$_instance = new Db\Adapter();
+			self::$_instance = new Adapter();
 		}
 		
 		return self::$_instance;
@@ -29,6 +29,7 @@ class Adapter {
 		if($uid == null) {
 			throw new Exception("Illegal Arguments no $uid");
  		}
- 		$statement = $$this->_adapter->exec("Insert into users values ($uid, $data)");
+		//print "$data"; exit;
+ 		$statement = $this->_adapter->exec("Insert into users (uid, data) values ('$uid', '$data')");
 	}
 }
