@@ -1,0 +1,15 @@
+parameters:
+    oauth_fitbit_client_id: 227HZF
+    oauth_fitbit_client_secret: 0a856487889789c6f6ca1c691fdd9cc3
+    oauth_fitbit_authorization_endpoint: https://www.fitbit.com/oauth2/authorize
+    oauth_fitbit_token_endpoint: https://api.fitbit.com/oauth2/token
+    oauth_fitbit_redirect_uri: https://www.pavans-world.com/fitbit/subscribe
+
+
+services:
+    adoy_oauth_client:
+        class: OAuth2\Client
+        arguments: ['%oauth_fitbit_client_id%','%oauth_fitbit_client_secret%']
+    fitbit_oauth_client:
+        class: FitbitOAuth\ClientBundle\Service\OAuth2Client
+        arguments:  ['@adoy_oauth_client','%oauth_fitbit_authorization_endpoint%','%oauth_fitbit_token_endpoint%','%oauth_fitbit_redirect_uri%','authorization_code','activity heartrate location nutrition profile sleep']
