@@ -1,6 +1,0 @@
-
-db:
-  filename: "/usr/share/nginx/data/fitbit_listener"
-
-fitbit:
-  verification_key: "9b55fda64956820da9becd83851563a6c14673501288b28e6ee2d7e1c3931724" 

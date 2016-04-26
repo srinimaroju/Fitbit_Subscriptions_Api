@@ -1,3 +1,7 @@
+fitbit_o_auth_client:
+    resource: "@FitbitOAuthClientBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation

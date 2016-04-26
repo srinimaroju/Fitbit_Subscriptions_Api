@@ -8,7 +8,7 @@ parameters:
     database_user:     root
     database_password: ~
     # You should uncomment this if you want use pdo_sqlite
-    # database_path: "%kernel.root_dir%/data.db3"
+    database_path: "/usr/share/nginx/data/fitbit_listener"
 
     mailer_transport:  smtp
     mailer_host:       127.0.0.1
@@ -17,3 +17,10 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    # ...
+    oauth2_client_id:       227HZF
+    oauth2_client_secret:   0a856487889789c6f6ca1c691fdd9cc3
+    oauth2_redirect_url:    https://www.pavans-world.com/fitbit/subscribe.php
+    oauth2_auth_endpoint:   https://www.fitbit.com/oauth2/authorize
+    oauth2_token_endpoint:  https://api.fitbit.com/oauth2/token

@@ -31,7 +31,7 @@ class VerifyController extends Controller {
         $fitbit_config = $this->container->getParameter("fitbit");
 		$verification_key = $fitbit_config['verification_key'];
 		
-		if($key == "9b55fda64956820da9becd83851563a6c14673501288b28e6ee2d7e1c3931724") {
+		if($key == $verification_key) {
 			//echo "http 204";
 			$response_code = Response::HTTP_NO_CONTENT;
 
