@@ -40,6 +40,24 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
 
+monolog:
+    handlers:
+        applog:
+            type: stream
+            path: /var/log/symfony.log
+            level: error
+        main:
+            type: fingers_crossed
+            action_level: warning
+            handler: file
+        file:
+            type: stream
+            level: debug
+        syslog:
+            type: syslog
+            level: error
+
+
 # Doctrine Configuration
 doctrine:
     dbal:
@@ -71,5 +89,7 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-# fitbit credentials
-
+jwt_auth:
+    client_id:     myclient
+    client_secret: myclientsecret
+    secret_base64_encoded: true

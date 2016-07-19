@@ -21,7 +21,7 @@ class OAuth2Client
     }
     
     public function getAuthenticationUrl() {
-        return $this->client->getAuthenticationUrl($this->authEndpoint, $this->redirectUrl);
+        return $this->client->getAuthenticationUrl($this->authEndpoint, $this->redirectUrl, $this->$params);
     }
 
     public function getAccessToken($code = null)
@@ -33,11 +33,21 @@ class OAuth2Client
         if(isset($response['result']) && isset($response['result']['access_token'])) {
             $accessToken = $response['result']['access_token'];
             $this->client->setAccessToken($accessToken);
-            return $accessToken;
+            return $response;
         }
         throw new OAuth2\Exception(sprintf('Unable to obtain Access Token. Response from the Server: %s ', var_export($response)));
     }
     
+    public function getRefreshedAccessToken($refreshToken) {
+        $params['refresh_token'] = $refreshToken;
+        $response = $this->client->getAccessToken($this->tokenEndpoint, OAuth2\Client::GRANT_TYPE_REFRESH_TOKEN, $params);
+        if(isset($response['result']) && isset($response['result']['access_token'])) {
+            $accessToken = $response['result']['access_token'];
+            $this->client->setAccessToken($accessToken);
+            return $response;
+        }
+    }
+
     public function fetch($url) {
         return $this->client->fetch($url);
     }

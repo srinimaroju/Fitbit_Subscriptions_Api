@@ -1,3 +1,7 @@
 fitbit_subscribe:
     path:      /subscribe
     defaults:  { _controller: FitbitOAuthClientBundle:Subscribe:subscribe }
+
+fitbit_secure:
+    resource: '@FitbitOAuthClientBundle/Controller/'
+    type: annotation

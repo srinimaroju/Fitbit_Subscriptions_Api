@@ -4,6 +4,6 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    fitbit_user_provider:
+        class: FitbitOAuth\ClientBundle\Security\UserProvider
+        arguments: ['@jwt_auth.auth0_service']

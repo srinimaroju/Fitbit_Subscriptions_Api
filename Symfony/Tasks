@@ -1,0 +1,12 @@
+1) Allow registration via oauth2 - Done
+
+2) Save user into db - Done
+
+3) Create a JWT based on user_id and send as response
+
+4) Store token in localStorage
+
+localStorage.setItem('profile', JSON.stringify(profile));
+localStorage.setItem('id_token', token);
+
+5) Subscribe to sleep notifications

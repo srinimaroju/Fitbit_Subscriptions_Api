@@ -6,6 +6,9 @@ security:
     providers:
         in_memory:
             memory: ~
+        fitbit_user_provider:
+            id:
+                fitbit_user_provider
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -22,3 +25,11 @@ security:
 
             # form_login: ~
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+        secured_area:
+            pattern: ^/api
+            stateless: true
+            simple_preauth:
+                authenticator: jwt_auth.jwt_authenticator
+    access_control:
+        - { path: ^/api/unsecure, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: ROLE_OAUTH_USER }
