@@ -2,7 +2,7 @@
 
 namespace FitbitOAuth\ClientBundle\Service;
 use OAuth2;
-class OAuth2Client
+class FitbitOAuth2Client  
 {
     protected $client;
     protected $authEndpoint;
@@ -21,7 +21,8 @@ class OAuth2Client
     }
     
     public function getAuthenticationUrl() {
-        return $this->client->getAuthenticationUrl($this->authEndpoint, $this->redirectUrl, $this->$params);
+        $params = array("scope" => $this->params);
+        return $this->client->getAuthenticationUrl($this->authEndpoint, $this->redirectUrl,  $params);
     }
 
     public function getAccessToken($code = null)

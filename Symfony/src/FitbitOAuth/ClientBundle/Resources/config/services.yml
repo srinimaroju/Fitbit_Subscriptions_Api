@@ -11,5 +11,5 @@ services:
         class: OAuth2\Client
         arguments: ['%oauth_fitbit_client_id%','%oauth_fitbit_client_secret%']
     fitbit_oauth_client:
-        class: FitbitOAuth\ClientBundle\Service\OAuth2Client
+        class: FitbitOAuth\ClientBundle\Service\FitbitOAuth2Client
         arguments:  ['@adoy_oauth_client','%oauth_fitbit_authorization_endpoint%','%oauth_fitbit_token_endpoint%','%oauth_fitbit_redirect_uri%','authorization_code','activity heartrate location nutrition profile sleep']
