@@ -43,7 +43,8 @@ class SubscribeController extends Controller
 
                 // actually executes the queries (i.e. the INSERT query)
                 $em->flush();
-                $jwt = FitbitJWT::encode();
+                $jwt_service = $this->get("fitbit_jwt_token_service");
+                $jwt = $jwt_service->generateJWT(array('user_id'=>$uid));
                 $return_response = new Response('Saved new product with id '.$user->getId()." and jwt $jwt");
                 $logger->info("Create jwt $jwt for user id $uid and returned");
                 $return_response->headers->set("X-JWT-Auth","$jwt");

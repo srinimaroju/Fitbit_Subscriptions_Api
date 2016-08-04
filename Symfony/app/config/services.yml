@@ -3,7 +3,8 @@
 parameters:
 #    parameter_name: value
 
+
 services:
-    fitbit_user_provider:
-        class: FitbitOAuth\ClientBundle\Security\UserProvider
-        arguments: ['@jwt_auth.auth0_service']
+    a0_user_provider:
+        class: AppBundle\Security\A0UserProvider
+        arguments: ["@jwt_auth.auth0_service"]

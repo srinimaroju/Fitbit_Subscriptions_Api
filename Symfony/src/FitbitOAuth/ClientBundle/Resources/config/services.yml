@@ -4,6 +4,8 @@ parameters:
     oauth_fitbit_authorization_endpoint: https://www.fitbit.com/oauth2/authorize
     oauth_fitbit_token_endpoint: https://api.fitbit.com/oauth2/token
     oauth_fitbit_redirect_uri: https://www.pavans-world.com/fitbit/subscribe
+    jwt_client_id: "mycustomclient"
+    jwt_client_secret: "mycustomsecret"
 
 
 services:
@@ -13,3 +15,9 @@ services:
     fitbit_oauth_client:
         class: FitbitOAuth\ClientBundle\Service\FitbitOAuth2Client
         arguments:  ['@adoy_oauth_client','%oauth_fitbit_authorization_endpoint%','%oauth_fitbit_token_endpoint%','%oauth_fitbit_redirect_uri%','authorization_code','activity heartrate location nutrition profile sleep']
+    fitbit_jwt_token_service:
+        class: FitbitOAuth\ClientBundle\Service\TokenService
+        arguments:  ['%jwt_client_id%','%jwt_client_secret%']
+    fitbit_user_provider:
+        class: FitbitOAuth\ClientBundle\Security\UserProvider
+        arguments: ["@jwt_auth.auth0_service"]
