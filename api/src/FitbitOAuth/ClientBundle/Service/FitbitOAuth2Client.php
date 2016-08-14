@@ -28,9 +28,9 @@ class FitbitOAuth2Client
     public function getAccessToken($code = null)
     {
         if ($code !== null) {
-            $this->params['code'] = $code;
+           $params = array('code' => $code  , 'redirect_uri' => $this->redirectUrl);
         }
-        $response = $this->client->getAccessToken($this->tokenEndpoint, $this->grant, $this->params);
+        $response = $this->client->getAccessToken($this->tokenEndpoint, $this->grant, $params);
         if(isset($response['result']) && isset($response['result']['access_token'])) {
             $accessToken = $response['result']['access_token'];
             $this->client->setAccessToken($accessToken);
