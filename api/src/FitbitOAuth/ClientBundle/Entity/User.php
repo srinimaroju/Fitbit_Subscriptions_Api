@@ -57,7 +57,16 @@ class User implements UserInterface, \Serializable
 
         return $this;
     }
+    
+    public function getUsername()
+    {
+        return $this->jwt["email"];
+    }
 
+    public function getPassword()
+    {
+        return null;
+    }
     /**
      * Get createdAt
      *
