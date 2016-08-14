@@ -3,7 +3,7 @@ parameters:
     oauth_fitbit_client_secret: 0a856487889789c6f6ca1c691fdd9cc3
     oauth_fitbit_authorization_endpoint: https://www.fitbit.com/oauth2/authorize
     oauth_fitbit_token_endpoint: https://api.fitbit.com/oauth2/token
-    oauth_fitbit_redirect_uri: https://www.pavans-world.com/fitbit/subscribe
+    oauth_fitbit_redirect_uri: https://www.pavans-world.com/fitbit/api/subscribe
     jwt_client_id: "mycustomclient"
     jwt_client_secret: "mycustomsecret"
 
