@@ -22,7 +22,7 @@ class UserProvider implements  UserProviderInterface, UserLoaderInterface
     }
     
     public function loadUserbyFitBitUid($fitbit_uid) {
-        $
+        return null;
     }
 
     public function loadUserByUsername($username)
