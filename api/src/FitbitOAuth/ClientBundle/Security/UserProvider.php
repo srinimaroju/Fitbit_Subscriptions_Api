@@ -8,25 +8,21 @@
 
 namespace FitbitOAuth\ClientBundle\Security;
 
-
-use Auth0\JWTAuthBundle\Security\Auth0Service;
-use Auth0\JWTAuthBundle\Security\Core\JWTUserProviderInterface;
-use Symfony\Component\Intl\Exception\NotImplementedException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 
-class UserProvider implements JWTUserProviderInterface
+class UserProvider implements  UserProviderInterface, UserLoaderInterface
 {
-    protected $auth0Service;
-
-    public function __construct(Auth0Service $auth0Service) {
-        $this->auth0Service = $auth0Service;
-    }
-
+   
     public function loadUserByJWT($jwt) {
         $data = $this->auth0Service->getUserProfileByA0UID($jwt->token,$jwt->sub);
         return new A0User($data, array('ROLE_OAUTH_USER'));
+    }
+    
+    public function loadUserbyFitBitUid($fitbit_uid) {
+        $
     }
 
     public function loadUserByUsername($username)
@@ -52,5 +48,17 @@ class UserProvider implements JWTUserProviderInterface
     public function supportsClass($class)
     {
         return $class === 'AppBundle\Security\A0User';
+    }
+    public function isEqualTo(UserInterface $user)
+    {
+        if (!$user instanceof WebserviceUser) {
+            return false;
+        }
+
+        if ($this->username !== $user->getUsername()) {
+            return false;
+        }
+
+        return true;
     }
 }

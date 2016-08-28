@@ -28,24 +28,39 @@ class SubscribeController extends Controller
         } else{
             $response = $oauth_client->getAccessToken($request->query->get('code'));
             if($response['code'] == 200) {
-            
                 $result = $response['result'];
-                $client->setAccessToken($result['access_token']);
-                    
-                $user = new User();
-                $user->setFitbitUid($result['user_id']);
-                $uid = $result['user_id'];
-                $user->setFitbitData(json_encode($result));
+                $fitbit_uid = $result['user_id'];
+
+                //Check to see if user exists already
+                
 
                 $em = $this->getDoctrine()->getManager();
-                  // tells Doctrine you want to (eventually) save the Product (no queries yet)
-                $em->persist($user);
+
+                $user = $em
+                          ->getRepository('FitbitOAuth\\ClientBundle\\Entity\\User')
+                          ->loadUserByFitBitUid($fitbit_uid);
+
+                if(!$user) {
+                    $user = new User();
+                    $user->setFitbitUid($result['user_id']);
+                    $user->setFitbitData(json_encode($result));
+
+                    
+                    $em->persist($user);
+                    
+                } else {
+                    //User already exists, update this details
+                    $user->setFitbitData(json_encode($result));
+                    //$em->update($user);
+                }
+                $em->flush();
+                
 
                 // actually executes the queries (i.e. the INSERT query)
-                $em->flush();
+                $uid = $user->getUid();
                 $jwt_service = $this->get("fitbit_jwt_token_service");
-                $jwt = $jwt_service->generateJWT(array('user_id'=>$uid));
-                $return_response = new Response('Saved new product with id '.$user->getId()." and jwt $jwt");
+                $jwt = $jwt_service->generateJWT(array('user_id'=>$user->getUid()));
+                $return_response = new Response('Saved new product with id '.$user->getUid()." and jwt $jwt");
                 $logger->info("Create jwt $jwt for user id $uid and returned");
                 $return_response->headers->set("X-JWT-Auth","$jwt");
                 return $return_response;

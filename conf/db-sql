@@ -1,0 +1,13 @@
+CREATE TABLE "users" (
+	`fitbit_uid`	varchar(20),
+	`fitbit_data`	text,
+	`created_at`	NUMERIC,
+	`last_updated_at`	NUMERIC,
+	`facebook_data`	TEXT,
+	PRIMARY KEY(fitbit_uid)
+);
+
+Or
+
+ php bin/console doctrine:database:create
+ php bin/console doctrine:schema:update

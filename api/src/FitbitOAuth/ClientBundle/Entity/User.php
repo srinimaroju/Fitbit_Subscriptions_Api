@@ -3,17 +3,19 @@
 namespace FitbitOAuth\ClientBundle\Entity;
 
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
  * @ORM\Table(name="users")
+ * @ORM\Entity(repositoryClass="FitbitOAuth\ClientBundle\Entity\UserRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 
-class User implements UserInterface, \Serializable
+class User implements UserInterface, EquatableInterface, \Serializable
 {
 	 /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -31,7 +33,7 @@ class User implements UserInterface, \Serializable
     /** @ORM\Column(type="datetime", name="last_updated_at") */
     private $last_updated_at;
 
-    /** @ORM\Column(type="text", name="facebook_data") */
+    /** @ORM\Column(type="text", name="facebook_data", nullable=true) */
     private $facebook_data;
 
     /**
@@ -48,14 +50,27 @@ class User implements UserInterface, \Serializable
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     *
-     * @return User
      */
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
+    }
 
-        return $this;
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->last_updated_at = new \DateTime();
+    }
+
+     /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        $this->created_at = new \DateTime();
+        $this->last_updated_at = new \DateTime();
     }
     
     public function getUsername()
@@ -194,6 +209,14 @@ class User implements UserInterface, \Serializable
         // you *may* need a real salt depending on your encoder
         // see section on salt below
         return null;
+    }
+    public function isEqualTo(UserInterface $user)
+    {
+        if ($this->getFitbitUid() !== $user->getFitbitUid()) {
+            return false;
+        }
+
+        return true;
     }
 
     /** @see \Serializable::unserialize() */

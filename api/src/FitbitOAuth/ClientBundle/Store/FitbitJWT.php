@@ -4,6 +4,8 @@
 
 namespace FitbitOAuth\ClientBundle\Store;
 
+use Firebase\JWT\JWT;
+
 class FitbitJWT {
 
     public static function decode($jwt, $client_id, $client_secret) {
@@ -12,7 +14,7 @@ class FitbitJWT {
 
         try {
             // Decode the user
-            $decodedToken = \JWT::decode($jwt, $secret, array('HS256'));
+            $decodedToken = JWT::decode($jwt, $secret, array('HS256'));
             // validate that this JWT was made for us
             if ($decodedToken->aud != $client_id) {
                 throw new CoreException("This token is not intended for us.");
@@ -44,7 +46,7 @@ class FitbitJWT {
 
             $secret = base64_decode(strtr($client_secret, '-_', '+/'));
 
-            $jwt = \JWT::encode($payload, $secret);
+            $jwt = JWT::encode($payload, $secret);
 
             return $jwt;
 
