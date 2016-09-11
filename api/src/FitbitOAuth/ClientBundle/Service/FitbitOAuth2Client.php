@@ -2,6 +2,8 @@
 
 namespace FitbitOAuth\ClientBundle\Service;
 use OAuth2;
+use ArrayObject;
+
 class FitbitOAuth2Client  
 {
     protected $client;
@@ -10,12 +12,23 @@ class FitbitOAuth2Client
     protected $redirectUrl;
     protected $grant;
     protected $params;
-    public function __construct(OAuth2\Client $client, $authEndpoint, $tokenEndpoint, $redirectUrl, $grant, $params)
+    protected $user_api;
+    protected $refresh_token;
+
+
+    public function __construct(OAuth2\Client $client, $fitbit_api, $grant, $params)
     {
+       // print_r($fitbit_api_urls); exit;    
+        $fitbit_api_urls = new ArrayObject($fitbit_api, ArrayObject::ARRAY_AS_PROPS);
+       // $fitbit_api_urls = $fitbit_apis[0];
+        
+        //print_r($fitbit_api_urls); exit;  
         $this->client = $client;
-        $this->authEndpoint = $authEndpoint;
-        $this->tokenEndpoint = $tokenEndpoint;
-        $this->redirectUrl = $redirectUrl;
+        $this->authEndpoint  = $fitbit_api_urls->oauth_authorize_endpoint;
+        $this->tokenEndpoint = $fitbit_api_urls->oauth_token_endpoint;
+        $this->redirectUrl   = $fitbit_api_urls->oauth_redirect_uri;
+        $this->user_api      = $fitbit_api_urls->user_api;
+        
         $this->grant = $grant;
         $this->params = $params;
     }
@@ -49,7 +62,40 @@ class FitbitOAuth2Client
         }
     }
 
+    public function setAccessToken($token){
+        $this->client->setAccessToken($token);
+    }
+
+    public function setRefreshToken($token){
+        $this->refresh_token= $token;
+    }
+
+    public function getUserProfileData($uid) {
+        $user_profile_api = $this->constructUserUrl($this->user_api['profile'], $uid);
+        $response = $this->fetch($user_profile_api);
+        $user = $response['result']['user'];
+        $keys = array("age","displayName","gender","avatar","fullName");
+        $result = array();
+        foreach($keys as $key) {
+            $result[$key] = $user[$key];
+        }
+        return $result;
+    }
+
+    protected function constructUserUrl($url, $uid) {
+        return str_replace("[user-id]", $uid, $url);
+    }
+
     public function fetch($url) {
-        return $this->client->fetch($url);
+        $this->client->setAccessTokenType(OAuth2\Client::ACCESS_TOKEN_BEARER);
+        $response = $this->client->fetch($url);
+
+        //Handle expired token
+        if($response['code']==401 && $response['result']['errors'][0]['errorType']=="expired_token") {
+            $access_token = $this->getRefreshedAccessToken($this->refresh_token);
+            return $this->client->fetch($url);
+        } else {
+            return $response;
+        }
     }
 } 

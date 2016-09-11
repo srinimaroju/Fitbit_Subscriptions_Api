@@ -1,0 +1,28 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+security:
+
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        fitbit_user_provider:
+            id: fitbit_user_provider
+        fitbit_user_loader:
+            entity: 
+                class: FitbitOAuth\ClientBundle\Entity\User
+                property: uid
+
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        secured_area:
+            pattern: ^/api
+            stateless: true
+            simple_preauth:
+                authenticator: fitbit_jwt_authenticator
+            provider: fitbit_user_loader
+    access_control:
+       # - { path: ^/api/unsecure, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: ROLE_API }

@@ -33,8 +33,8 @@ class User implements UserInterface, EquatableInterface, \Serializable
     /** @ORM\Column(type="datetime", name="last_updated_at") */
     private $last_updated_at;
 
-    /** @ORM\Column(type="text", name="facebook_data", nullable=true) */
-    private $facebook_data;
+    /** @ORM\Column(type="text", name="user_profile_data", nullable=true) */
+    private $user_profile_data;
 
     /**
      * Get uid
@@ -75,7 +75,7 @@ class User implements UserInterface, EquatableInterface, \Serializable
     
     public function getUsername()
     {
-        return $this->jwt["email"];
+        return $this->uid;
     }
 
     public function getPassword()
@@ -126,7 +126,6 @@ class User implements UserInterface, EquatableInterface, \Serializable
     public function setFitbitUid($fitbitUid)
     {
         $this->fitbit_uid = $fitbitUid;
-
         return $this;
     }
 
@@ -149,8 +148,7 @@ class User implements UserInterface, EquatableInterface, \Serializable
      */
     public function setFitbitData($fitbitData)
     {
-        $this->fitbit_data = $fitbitData;
-
+        $this->fitbit_data = json_encode($fitbitData);
         return $this;
     }
 
@@ -161,36 +159,35 @@ class User implements UserInterface, EquatableInterface, \Serializable
      */
     public function getFitbitData()
     {
-        return $this->fitbit_data;
+        return json_decode($this->fitbit_data);
     }
 
     /**
-     * Set facebookData
+     * Set userProfileData
      *
-     * @param string $facebookData
+     * @param string $userProfileData
      *
      * @return User
      */
-    public function setFacebookData($facebookData)
+    public function setUserProfileData($user_profile_data)
     {
-        $this->facebook_data = $facebookData;
-
+        $this->user_profile_data = json_encode($user_profile_data);
         return $this;
     }
 
     /**
-     * Get facebookData
+     * Get userProfileData
      *
      * @return string
      */
-    public function getFacebookData()
+    public function getUserProfileData()
     {
-        return $this->facebook_data;
+        return json_decode($this->user_profile_data);
     }
 
     public function getRoles()
     {
-        return array('ROLE_USER');
+        return array('ROLE_USER','ROLE_API');
     }
     /** @see \Serializable::serialize() */
     public function serialize()

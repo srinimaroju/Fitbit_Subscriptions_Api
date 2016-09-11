@@ -32,6 +32,6 @@ class TokenService {
      */
     public function decodeJWT($encToken)
     {
-        return FitbitJWT::decode($encToken, $this->client_id, $this->client_secret, $this->secret_base64_encoded);
+        return FitbitJWT::decode($encToken, $this->client_id, $this->client_secret);
     }
 }

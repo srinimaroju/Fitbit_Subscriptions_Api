@@ -19,8 +19,14 @@ class UserProvider implements  UserProviderInterface, UserLoaderInterface
 {
    
     public function loadUserByJWT($jwt) {
-        $data = $this->auth0Service->getUserProfileByA0UID($jwt->token,$jwt->sub);
-        return new A0User($data, array('ROLE_OAUTH_USER'));
+        $user_id = $jwt->user_id;
+        $em = $this->getDoctrine()->getManager();
+        $user = $em
+                  ->getRepository('FitbitOAuth\\ClientBundle\\Entity\\User')
+                  ->loadUserByFitBitUid($fitbit_uid);
+
+        return new User(
+            $user, array('ROLE_API'));
     }
     
     public function loadUserbyFitBitUid($fitbit_uid) {
@@ -30,10 +36,6 @@ class UserProvider implements  UserProviderInterface, UserLoaderInterface
     public function loadUserByUsername($username)
     {
         throw new NotImplementedException('method not implemented');
-    }
-
-    public function getAnonymousUser() {
-        return new A0AnonymousUser();
     }
 
     public function refreshUser(UserInterface $user)
@@ -57,10 +59,11 @@ class UserProvider implements  UserProviderInterface, UserLoaderInterface
             return false;
         }
 
+        /*
         if ($this->username !== $user->getUsername()) {
             return false;
         }
-
+        */
         return true;
     }
 }

@@ -5,6 +5,7 @@
 namespace FitbitOAuth\ClientBundle\Store;
 
 use Firebase\JWT\JWT;
+use Exception;
 
 class FitbitJWT {
 
@@ -20,7 +21,7 @@ class FitbitJWT {
                 throw new CoreException("This token is not intended for us.");
             }
         } catch(\Exception $e) {
-            throw new CoreException($e->getMessage());
+            throw new Exception($e->getMessage());
         }
 
         return $decodedToken;
