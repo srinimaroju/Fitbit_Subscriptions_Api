@@ -81,7 +81,10 @@ class FitbitDataHandler {
 
         //Subscribe and then persist the response
         $response = $this->client->subscribeToActivity($fitbit_uid, $subscription->getSid(), $activity);
-        if($response['code']!=200 || $response['code']!=201)  {
+        if($response['code']==409) {
+            return $response;
+        }
+        if($response['code']!=200 && $response['code']!=201)  {
         	throw new OAuth2\Exception(sprintf("Unable to subscribe to the activity. Message from server: %s ", var_export($response)));
         }
         $subscription->setSubscriptionData($response);
