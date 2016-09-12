@@ -14,3 +14,9 @@ Or
 
 Generate entities
  php bin/console doctrine:generate:entities FitbitOAuth/ClientBundle
+
+
+ Deployment instructions
+ git pull
+ php bin/console cache:clear --env=prod
+ chmod 777 -R /usr/share/nginx/html/fitbit/api/var/cache/prod/

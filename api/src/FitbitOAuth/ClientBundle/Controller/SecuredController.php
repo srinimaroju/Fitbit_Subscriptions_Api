@@ -20,7 +20,7 @@ use FitbitOAuth\ClientBundle\Service\FitbitDataHandler;
 class SecuredController extends Controller
 {
     /**
-     * @Route("/api/user/get/profile", name="getProfilePage")
+     * @Route("/user/get/profile", name="getProfilePage")
      */
     public function getProfileAction(Request $request)
     {
@@ -39,7 +39,7 @@ class SecuredController extends Controller
     }
     
     /**
-     * @Route("/api/user/subscribe/sleep", name="subscribetosleep")
+     * @Route("/user/subscribe/sleep", name="subscribetosleep")
      */
     public function subscribeToSleepAction(Request $request)
     {
@@ -54,7 +54,7 @@ class SecuredController extends Controller
     
 
     /**
-     * @Route("/api/user/set/email/{email}", name="Setemail")
+     * @Route("/user/set/email/{email}", name="Setemail")
      */
     public function setUserEmailAction(Request $request, $email) {
         $method = $request->getMethod(); 
@@ -77,7 +77,7 @@ class SecuredController extends Controller
         }
     }
     /**
-     * @Route("/api/unsecure/ping", name="unsecurepingpage")
+     * @Route("/unsecure/ping", name="unsecurepingpage")
      */
     public function unsecureIndexAction()
     {

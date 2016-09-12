@@ -26,4 +26,4 @@ security:
             methods: [GET, POST]
     access_control:
        # - { path: ^/api/unsecure, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/user/, roles: ROLE_API }
+        - { path: ^/user/, roles: ROLE_API }
