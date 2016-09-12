@@ -8,6 +8,8 @@ parameters:
        user_api: 
          profile: "https://api.fitbit.com/1/user/[user-id]/profile.json"
          sleep: "https://api.fitbit.com/1/user/[user-id]/sleep/date/[date].json"
+         activites_subscribe: "https://api.fitbit.com/1/user/-/activities/apiSubscriptions/[subscription-id].json"
+         sleep_subscribe: "https://api.fitbit.com/1/user/-/sleep/apiSubscriptions/[subscription-id].json"
 
     #my custom JWT Settings
     jwt_client_id: "mycustomclient"

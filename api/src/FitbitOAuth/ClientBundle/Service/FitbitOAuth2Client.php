@@ -1,6 +1,8 @@
 <?php
 
 namespace FitbitOAuth\ClientBundle\Service;
+
+use Symfony\Component\Config\Definition\Exception\Exception;
 use OAuth2;
 use ArrayObject;
 
@@ -59,6 +61,8 @@ class FitbitOAuth2Client
             $accessToken = $response['result']['access_token'];
             $this->client->setAccessToken($accessToken);
             return $response;
+        } else {
+            return null;
         }
     }
 
@@ -71,6 +75,8 @@ class FitbitOAuth2Client
     }
 
     public function getUserProfileData($uid) {
+        $this->client->setAccessTokenType(OAuth2\Client::ACCESS_TOKEN_BEARER);
+
         $user_profile_api = $this->constructUserUrl($this->user_api['profile'], $uid);
         $response = $this->fetch($user_profile_api);
         $user = $response['result']['user'];
@@ -82,18 +88,37 @@ class FitbitOAuth2Client
         return $result;
     }
 
+    public function subscribetoSleep($uid, $sid) {
+        $this->client->setAccessTokenType(OAuth2\Client::ACCESS_TOKEN_BEARER);
+
+        $sleep_sub_api = $this->constructSubscriptionUrl($this->user_api['sleep_subscribe'], $sid);
+     
+        $response = $this->fetch($sleep_sub_api, array(), OAuth2\Client::HTTP_METHOD_POST);
+        return $response;
+    }
+
     protected function constructUserUrl($url, $uid) {
         return str_replace("[user-id]", $uid, $url);
     }
 
-    public function fetch($url) {
-        $this->client->setAccessTokenType(OAuth2\Client::ACCESS_TOKEN_BEARER);
-        $response = $this->client->fetch($url);
+    protected function constructSubscriptionUrl($url, $sid) {
+         return str_replace("[subscription-id]", $sid, $url);
+    }
 
+    public function fetch($url, $params=array(), $http_method = OAuth2\Client::HTTP_METHOD_GET) {
+        $response = $this->client->fetch($url, $params, $http_method);
         //Handle expired token
-        if($response['code']==401 && $response['result']['errors'][0]['errorType']=="expired_token") {
+        if($response['code']==401 &&
+              ( $response['result']['errors'][0]['errorType']=="expired_token"
+               || 
+               $response['result']['errors'][0]['errorType']=="invalid_token" )
+             ) {
             $access_token = $this->getRefreshedAccessToken($this->refresh_token);
-            return $this->client->fetch($url);
+            if($access_token) {
+                return $this->client->fetch($url, $params, $http_method);   
+            } else {
+                throw new Exception("Failed to refresh token");
+            }
         } else {
             return $response;
         }

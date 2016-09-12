@@ -24,6 +24,9 @@ class User implements UserInterface, EquatableInterface, \Serializable
     /** @ORM\Column(type="string", name="fitbit_uid") */
     private $fitbit_uid;
 
+    /** @ORM\Column(type="string", name="email", nullable=true) */
+    private $email;
+
     /** @ORM\Column(type="text", name="fitbit_data") */
     private $fitbit_data;
     
@@ -35,6 +38,7 @@ class User implements UserInterface, EquatableInterface, \Serializable
 
     /** @ORM\Column(type="text", name="user_profile_data", nullable=true) */
     private $user_profile_data;
+
 
     /**
      * Get uid
@@ -126,6 +130,29 @@ class User implements UserInterface, EquatableInterface, \Serializable
     public function setFitbitUid($fitbitUid)
     {
         $this->fitbit_uid = $fitbitUid;
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+     /**
+     * Set fitbitUid
+     *
+     * @param string $fitbitUid
+     *
+     * @return User
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
         return $this;
     }
 

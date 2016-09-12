@@ -55,11 +55,13 @@ class SubscribeController extends Controller
                     $user->setFitbitData($result);
                     //$em->update($user);
                 }
+                //persist to database
+                //$em->flush();
 
                 //Get user profile info
                 $fitbitHandler = new FitbitDataHandler($user, $oauth_client);
                 $user->setUserProfileData($fitbitHandler->getUserProfileData());
-
+                print_r($user->getUserProfileData());
                 //persist to database
                 $em->flush();
                 

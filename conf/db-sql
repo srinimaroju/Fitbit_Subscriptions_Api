@@ -10,4 +10,7 @@ CREATE TABLE "users" (
 Or
 
  php bin/console doctrine:database:create
- php bin/console doctrine:schema:update
+ php bin/console doctrine:schema:update --force
+
+Generate entities
+ php bin/console doctrine:generate:entities FitbitOAuth/ClientBundle

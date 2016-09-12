@@ -18,11 +18,12 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         secured_area:
-            pattern: ^/api
+            pattern: ^/api/
             stateless: true
             simple_preauth:
                 authenticator: fitbit_jwt_authenticator
             provider: fitbit_user_loader
+            methods: [GET, POST]
     access_control:
        # - { path: ^/api/unsecure, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: ROLE_API }
