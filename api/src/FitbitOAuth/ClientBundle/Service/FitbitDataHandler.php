@@ -48,9 +48,9 @@ class FitbitDataHandler {
             if($response['code']!=204) {
                 $result[] = array('error'=>true,"message"=>"error deleting subscription with sid %sid",'response'=>$response);
             } else {
+                $em->remove($subscription);
                 $result[] = $response;
             }
-            $em->remove($subscription);
         } 
         $em->flush();
         return $result;
