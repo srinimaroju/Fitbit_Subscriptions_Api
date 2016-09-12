@@ -18,7 +18,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         secured_area:
-            pattern: ^/api/
+            pattern: ^/user/
             stateless: true
             simple_preauth:
                 authenticator: fitbit_jwt_authenticator

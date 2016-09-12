@@ -95,13 +95,33 @@ class FitbitOAuth2Client
         return $response;
     }
 
+    public function getSubscriptions($activity=null) {
+        $this->client->setAccessTokenType(OAuth2\Client::ACCESS_TOKEN_BEARER);
+        $subscription_url =  $this->user_api['list_subscriptions'];
+        if($activity) {
+            $subscription_url = str_replace('[activity]',$activity,$this->user_api['list_subscriptions_collection']);
+        }
+        $response = $this->fetch($subscription_url);
+        return $response;
+    }
+
+    public function deleteSubscriptions($activity, $sid) {
+        $this->client->setAccessTokenType(OAuth2\Client::ACCESS_TOKEN_BEARER);
+        $subscription_url =  $this->constructSubscriptionUrl($this->user_api['subscribe_api'], $sid, $activity);
+
+        $response = $this->fetch($subscription_url, array(), OAuth2\Client::HTTP_METHOD_DELETE);
+        return $response;
+    }
+
     protected function constructUserUrl($url, $uid) {
         return str_replace("[user-id]", $uid, $url);
     }
 
+
     protected function constructSubscriptionUrl($url, $sid, $activity) {
          return str_replace('[activity]',$activity,str_replace("[subscription-id]", $sid, $url));
     }
+
 
     public function fetch($url, $params=array(), $http_method = OAuth2\Client::HTTP_METHOD_GET) {
         $response = $this->client->fetch($url, $params, $http_method);

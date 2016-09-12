@@ -39,19 +39,45 @@ class SecuredController extends Controller
     }
     
     /**
-     * @Route("/user/subscribe/sleep", name="subscribetosleep")
+     * @Route("/user/subscribe/{activity}", name="subscribetosleep")
      */
-    public function subscribeToSleepAction(Request $request)
+    public function subscribeToSleepAction(Request $request, $activity)
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $oauth_client = $this->get("fitbit_oauth_client");
         $fitbithandler = new FitbitDataHandler($user, $oauth_client);
         $em = $this->getDoctrine()->getManager();
-        $response = $fitbithandler->subscribeToActivity($em,'sleep');
+        $response = $fitbithandler->subscribeToActivity($em,$activity);
 
         return new JsonResponse(array('result' => $response));
     }
     
+    /**
+     * @Route("/user/get/subscribe/{activity}", name="getsubscriptions")
+     */
+    public function getSubscriptionsAction(Request $request, $activity)
+    {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $oauth_client = $this->get("fitbit_oauth_client");
+        $fitbithandler = new FitbitDataHandler($user, $oauth_client);
+        $response = $fitbithandler->getSubscriptions($activity);
+
+        return new JsonResponse(array('result' => $response));
+    }
+
+    /**
+     * @Route("/user/delete/subscribe/{activity}", name="deletesubscriptions")
+     */
+    public function deleteSubscriptionsAction(Request $request, $activity)
+    {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $oauth_client = $this->get("fitbit_oauth_client");
+        $fitbithandler = new FitbitDataHandler($user, $oauth_client);
+        $response = $fitbithandler->deleteSubscriptions( $this->getDoctrine()->getManager(), $activity);
+
+        return new JsonResponse(array('result' => $response));
+    }
+
 
     /**
      * @Route("/user/set/email/{email}", name="Setemail")
