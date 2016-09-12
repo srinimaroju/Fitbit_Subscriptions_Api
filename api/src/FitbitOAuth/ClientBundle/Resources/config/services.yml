@@ -8,12 +8,12 @@ parameters:
        user_api: 
          profile: "https://api.fitbit.com/1/user/[user-id]/profile.json"
          sleep: "https://api.fitbit.com/1/user/[user-id]/sleep/date/[date].json"
-         activites_subscribe: "https://api.fitbit.com/1/user/-/activities/apiSubscriptions/[subscription-id].json"
-         sleep_subscribe: "https://api.fitbit.com/1/user/-/sleep/apiSubscriptions/[subscription-id].json"
+         subscribe_api: "https://api.fitbit.com/1/user/-/[activity]/apiSubscriptions/[subscription-id].json"
 
     #my custom JWT Settings
     jwt_client_id: "mycustomclient"
     jwt_client_secret: "mycustomsecret"
+    fitbit_verification_key: "4d40a1f118fe756b5bc61c7d5ba0ae3e655f7bf5135bd64484c34b0701b166de"
 
 
 services:

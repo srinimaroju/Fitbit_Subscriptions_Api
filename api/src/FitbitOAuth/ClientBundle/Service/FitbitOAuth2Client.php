@@ -88,12 +88,10 @@ class FitbitOAuth2Client
         return $result;
     }
 
-    public function subscribetoSleep($uid, $sid) {
+    public function subscribeToActivity($uid, $sid, $activity) {
         $this->client->setAccessTokenType(OAuth2\Client::ACCESS_TOKEN_BEARER);
-
-        $sleep_sub_api = $this->constructSubscriptionUrl($this->user_api['sleep_subscribe'], $sid);
-     
-        $response = $this->fetch($sleep_sub_api, array(), OAuth2\Client::HTTP_METHOD_POST);
+        $sub_api = $this->constructSubscriptionUrl($this->user_api['subscribe_api'], $sid, $activity);
+        $response = $this->fetch($sub_api, array(), OAuth2\Client::HTTP_METHOD_POST);
         return $response;
     }
 
@@ -101,8 +99,8 @@ class FitbitOAuth2Client
         return str_replace("[user-id]", $uid, $url);
     }
 
-    protected function constructSubscriptionUrl($url, $sid) {
-         return str_replace("[subscription-id]", $sid, $url);
+    protected function constructSubscriptionUrl($url, $sid, $activity) {
+         return str_replace('[activity]',$activity,str_replace("[subscription-id]", $sid, $url));
     }
 
     public function fetch($url, $params=array(), $http_method = OAuth2\Client::HTTP_METHOD_GET) {

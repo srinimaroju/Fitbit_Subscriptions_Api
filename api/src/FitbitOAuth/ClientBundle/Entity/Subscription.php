@@ -33,12 +33,16 @@ class Subscription
     /** @ORM\Column(type="datetime", name="last_updated_at") */
     private $last_updated_at;
 
+    /** @ORM\Column(type="string", name="activity") */
+    private $activity;
+
     /** @ORM\Column(type="integer", name="status", nullable=true) */
     private $status;
   
 
-    public function __construct($fitbit_uid) {
+    public function __construct($fitbit_uid, $activity) {
         $this->fitbit_uid = $fitbit_uid;
+        $this->activity = $activity;
         $this->status = 0;
     }
     /**
@@ -146,6 +150,31 @@ class Subscription
     public function getFitbitUid()
     {
         return $this->fitbit_uid;
+    }
+
+
+     /**
+     * Set activity
+     *
+     * @param string $activity
+     *
+     * @return Subscription
+     */
+    public function setActivity($activity)
+    {
+        $this->activity = $activity;
+
+        return $this;
+    }
+
+    /**
+     * Get activity
+     *
+     * @return string
+     */
+    public function getActivity()
+    {
+        return $this->activity;
     }
 
     /**

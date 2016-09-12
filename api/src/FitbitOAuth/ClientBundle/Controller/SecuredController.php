@@ -47,7 +47,7 @@ class SecuredController extends Controller
         $oauth_client = $this->get("fitbit_oauth_client");
         $fitbithandler = new FitbitDataHandler($user, $oauth_client);
         $em = $this->getDoctrine()->getManager();
-        $response = $fitbithandler->subscribeToSleep($em);
+        $response = $fitbithandler->subscribeToActivity($em,'sleep');
 
         return new JsonResponse(array('result' => $response));
     }

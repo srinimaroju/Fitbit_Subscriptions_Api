@@ -28,12 +28,13 @@ class FitbitDataHandler {
         return $this->client->getUserProfileData($this->user->getFitbitUid());
 	}
 
-	public function subscribeToSleep($em) {
+	public function subscribeToActivity($em,$activity) {
 		$fitbit_uid = $this->user->getFitbitUid();
 		$repository = $em->getRepository('FitbitOAuth\\ClientBundle\\Entity\\Subscription');
 
         $subscription = $repository->findOneBy(
-    		array('fitbit_uid' => $fitbit_uid)
+    		array('fitbit_uid' => $fitbit_uid,
+    			  'activity' => $activity)
     	);
 
         //Already subscribed
@@ -44,11 +45,17 @@ class FitbitDataHandler {
         				 );
         }
 
-        $subscription = new Subscription($fitbit_uid);
+        //Create a db record first - to get sid
+        $subscription = new Subscription($fitbit_uid, $activity);
         $em->persist($subscription);
         $em->flush();
         
-        $response = $this->client->subscribetoSleep($fitbit_uid, $subscription->getSid());
+
+        //Subscribe and then persist the response
+        $response = $this->client->subscribeToActivity($fitbit_uid, $subscription->getSid(), $activity);
+        if($response['code']!=200) {
+        	throw new OAuth2\Exception(sprintf("Unable to subscribe to the activity. Message from server: %s ", var_export($response)));
+        }
         $subscription->setSubscriptionData($response);
         $subscription->setStatus(1);
 
