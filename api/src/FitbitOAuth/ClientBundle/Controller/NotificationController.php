@@ -21,7 +21,7 @@ use FitbitOAuth\ClientBundle\Entity\Notification;
 class NotificationController extends Controller
 {
     /**
-     * @Route("/webhook/notify", name="Handle Fitbit Notifications")
+     * @Route("/api/webhook/notify", name="Handle Fitbit Notifications")
      */
     public function verifyEndPointAction(Request $request)
     {
