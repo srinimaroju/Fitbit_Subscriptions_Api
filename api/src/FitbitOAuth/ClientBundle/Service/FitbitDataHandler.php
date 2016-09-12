@@ -42,8 +42,17 @@ class FitbitDataHandler {
 
         foreach($subscriptions as $subscription) {
             $sid = $subscription->getSid();
-            $result[] = $this->client->deleteSubscriptions($activity, $sid);
+         
+            $response = $this->client->deleteSubscriptions($activity, $sid);
+         
+            if($response['code']!=204) {
+                $result[] = array('error'=>true,"message"=>"error deleting subscription with sid %sid",'response'=>$response);
+            } else {
+                $result[] = $response;
+            }
+            $em->remove($subscription);
         } 
+        $em->flush();
         return $result;
     } 
 
