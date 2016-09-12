@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints\Email as EmailConstraint;
 
 
 use FitbitOAuth\ClientBundle\Service\FitbitDataHandler;
+use FitbitOAuth\ClientBundle\Entity\Notification;
 
 class NotificationController extends Controller
 {
@@ -24,14 +25,36 @@ class NotificationController extends Controller
      */
     public function verifyEndPointAction(Request $request)
     {
-        $query_key = $request->query->get('verification_key');
-        $fitbit_verification_key = $this->container->getParameter('fitbit_verification_key');
-        if($query_key == $fitbit_verification_key) {
-             $response = new Response("", 204);
+        $method = $request->getMethod();
+
+        if($method == Request::METHOD_POST || $request->query->get("post")) {
+            $content = $request->getContent();
+           // $fitbithandler = new FitbitDataHandler($user, $oauth_client);
+            try {
+                $notification = new Notification(null,$content);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($notification);
+                $em->flush();
+            } catch(Exception $e) {
+                $logger->error(sprintf("Failed processing notification with message %s", $e->getMessage()));
+            }
+            
+            //Return 204 even in case of exception
+            return new Response("", Response::HTTP_NO_CONTENT);
+        }
+
+        $query_key = $request->query->get("verify");
+        $verification_key = $this->container->getParameter("fitbit_verification_key");
+        
+        if($query_key == $verification_key) {
+            //echo "http 204";
+            $response_code = Response::HTTP_NO_CONTENT;
 
         } else {
-            $response = new Response("Not Found",404);
+            //echo "http 404";
+            $response_code = Response::HTTP_NOT_FOUND;
         }
+        $response = new Response("", $response_code);
         return $response;
     }
 } 

@@ -1,9 +1,6 @@
 <?php
 
 namespace FitbitOAuth\ClientBundle\Entity;
-
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\EquatableInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  */
 
-class Notifications
+class Notification
 {
 	 /**
      * @ORM\Column(type="integer")
@@ -21,16 +18,19 @@ class Notifications
      */
     private $notification_id;
 
-    /** @ORM\Column(type="string", name="fitbit_uid") */
+    /** @ORM\Column(type="string", name="fitbit_uid", nullable=true) */
     private $fitbit_uid;
 
     /** @ORM\Column(type="text", name="notification_data", nullable=true) */
     private $notification_data;
     
-    /** @ORM\Column(type="datetime", name="created_at") */
+    /** @ORM\Column(type="datetime", name="received_at") */
     private $received_at;
     
-
+    public function __construct($fitbit_uid, $notification_data) {
+        $this->fitbit_uid = $fitbit_uid;
+        $this->notification_data = $notification_data;
+    }
     /**
      * Get notificationId
      *
@@ -111,5 +111,13 @@ class Notifications
     public function getReceivedAt()
     {
         return $this->received_at;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setReceivedAtValue()
+    {
+        $this->received_at = new \DateTime();
     }
 }

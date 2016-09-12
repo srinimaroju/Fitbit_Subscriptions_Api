@@ -18,10 +18,11 @@ class FitbitDataHandler {
 	public function __construct(User $user, FitbitOAuth2Client $oauth_client) {
 		$this->user = $user;
 		$this->client = $oauth_client;
-
-		$data = $user->getFitbitData();
-		$oauth_client->setRefreshToken($data->refresh_token);
-        $oauth_client->setAccessToken($data->access_token);
+        if($user!=null) {
+    		$data = $user->getFitbitData();
+    		$oauth_client->setRefreshToken($data->refresh_token);
+            $oauth_client->setAccessToken($data->access_token);
+        }
 	}
 
 	public function getUserProfileData() {
