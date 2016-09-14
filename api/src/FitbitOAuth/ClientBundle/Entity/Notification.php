@@ -26,10 +26,15 @@ class Notification
     
     /** @ORM\Column(type="datetime", name="received_at") */
     private $received_at;
+
+     /** @ORM\Column(type="integer", name="status", nullable=true) */
+    private $status;
+
     
     public function __construct($fitbit_uid, $notification_data) {
         $this->fitbit_uid = $fitbit_uid;
         $this->notification_data = $notification_data;
+        $this->status=0;
     }
     /**
      * Get notificationId
@@ -119,5 +124,14 @@ class Notification
     public function setReceivedAtValue()
     {
         $this->received_at = new \DateTime();
+    }
+
+     public function getStatus() {
+        return $this->status;
+    }
+
+    public function setStatus($status) {
+        $this->status = $status;
+        return $this;
     }
 }

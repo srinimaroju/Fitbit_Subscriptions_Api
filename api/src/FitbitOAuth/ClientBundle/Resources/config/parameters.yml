@@ -1,0 +1,31 @@
+parameters:
+    #Fitbit parameters
+    oauth_fitbit_client_id: 227HZF
+    oauth_fitbit_client_secret: 0a856487889789c6f6ca1c691fdd9cc3
+    fitbit_verification_key: "cfcc05156d1b2d7efec2b8773a75ffaf85e7a5de559d6da1bec28a193429daba"
+    fitbit_api_urls:
+       oauth_token_endpoint: https://api.fitbit.com/oauth2/token
+       oauth_authorize_endpoint: https://www.fitbit.com/oauth2/authorize
+       oauth_redirect_uri: https://www.pavans-world.com/fitbit/api/subscribe
+       user_api: 
+         profile: "https://api.fitbit.com/1/user/[user-id]/profile.json"
+         sleep: "https://api.fitbit.com/1/user/[user-id]/sleep/date/[date].json"
+         subscribe_api: "https://api.fitbit.com/1/user/-/[activity]/apiSubscriptions/[subscription-id].json"
+         list_subscriptions: "https://api.fitbit.com/1/user/-/apiSubscriptions.json"
+         list_subscriptions_collection: "https://api.fitbit.com/1/user/-/[activity]/apiSubscriptions.json"
+
+
+    #Database settings
+    #@TODO
+
+    #my custom JWT Settings
+    jwt_client_id: "mycustomclient"
+    jwt_client_secret: "mycustomsecret"
+
+    #Mailer configuration
+    mailer_transport: smtp
+    mailer_host: "ssl://smtp.gmail.com"
+    mailer_user: 'contactmorningmocha@gmail.com'
+    mailer_password: "mrnGMochaPa5sw0rd!23"
+    mailer_port: "465"
+    mailer_from_address: "noreply-morningmocha@gmail.com"

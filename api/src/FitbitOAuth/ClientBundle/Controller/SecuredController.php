@@ -86,7 +86,10 @@ class SecuredController extends Controller
         $method = $request->getMethod(); 
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        
+        if($user->getEmail()!="") {
+            return new JsonResponse(array('result'=>'failure','message'=>'already exists'),
+                                    Response::HTTP_CONFLICT);
+        }
         $emailConstraint = new EmailConstraint();
         $emailConstraint->message = 'Invalid Email';
         
@@ -95,7 +98,8 @@ class SecuredController extends Controller
             $emailConstraint 
         );
         if($errors->count()) {
-            throw new AccessDeniedHttpException($errors);   
+            return new JsonResponse(array('result'=>'failure','message'=>"invalid email"),
+                                    Response::HTTP_CONFLICT);  
         } else {
             $user->setEmail($email);
             $this->getDoctrine()->getManager()->flush();
