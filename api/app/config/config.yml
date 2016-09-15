@@ -60,7 +60,11 @@ monolog:
         syslog:
             type: syslog
             level: error
-
+        console:
+            type:   console
+            verbosity_levels:
+                VERBOSITY_NORMAL: INFO
+            formatter: my_formatter
 
 jwt_auth:
     client_id:     KNuydwEqwGsPNpxdAhACmOWDUmBEZsLn

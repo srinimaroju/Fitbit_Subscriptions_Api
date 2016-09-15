@@ -10,6 +10,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
+use Symfony\Component\Console\Logger\ConsoleLogger;
+
 use FitbitOAuth\ClientBundle\Entity\User;
 use FitbitOAuth\ClientBundle\Entity\Notification;
 

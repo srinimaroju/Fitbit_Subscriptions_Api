@@ -32,6 +32,8 @@ class NotificationController extends Controller
            // $fitbithandler = new FitbitDataHandler($user, $oauth_client);
             try {
                 $notification = new Notification(null,$content);
+                $data = json_decode($content);
+                $notification->setFitbitUid($data[0]->ownerId);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($notification);
                 $em->flush();

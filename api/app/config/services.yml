@@ -1,0 +1,5 @@
+services:
+    my_formatter:
+        class: Symfony\Bridge\Monolog\Formatter\ConsoleFormatter
+        arguments:
+            - "[%%datetime%%] %%start_tag%%%%message%%%%end_tag%% (%%level_name%%) %%context%% %%extra%%\n"
