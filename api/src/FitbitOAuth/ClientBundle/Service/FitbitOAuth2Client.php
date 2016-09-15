@@ -113,6 +113,23 @@ class FitbitOAuth2Client
         return $response;
     }
 
+    public function getActivityData($uid, $activity, $date) {
+
+        $this->client->setAccessTokenType(OAuth2\Client::ACCESS_TOKEN_BEARER);
+
+        $sleep_url_api = str_replace(array('[user-id]','[date]'), 
+                                     array($uid, $date), 
+                                     $this->user_api[$activity]
+                         );
+        $result = $this->client->fetch($sleep_url_api);
+        if($result['code']==200) {
+            $sleep_data = $result['result']['summary'];
+            return $sleep_data;
+        } else {
+            return null;
+        }
+    }
+
     protected function constructUserUrl($url, $uid) {
         return str_replace("[user-id]", $uid, $url);
     }

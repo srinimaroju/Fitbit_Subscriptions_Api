@@ -30,11 +30,13 @@ class Notification
      /** @ORM\Column(type="integer", name="status", nullable=true) */
     private $status;
 
+    const STATUS_RECEIVED  = 0;
+    const STATUS_PROCESSED = 1;
     
     public function __construct($fitbit_uid, $notification_data) {
         $this->fitbit_uid = $fitbit_uid;
         $this->notification_data = $notification_data;
-        $this->status=0;
+        $this->status=self::STATUS_RECEIVED;
     }
     /**
      * Get notificationId

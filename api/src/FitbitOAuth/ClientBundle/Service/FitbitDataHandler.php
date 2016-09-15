@@ -56,6 +56,12 @@ class FitbitDataHandler {
         return $result;
     } 
 
+    public function getActivityData($activity) {
+       $date = date("Y-m-d");
+       $fitbit_uid = $this->user->getFitbitUid();
+       return $this->client->getActivityData($fitbit_uid, $activity, $date);
+    }
+
 	public function subscribeToActivity($em,$activity) {
 		$fitbit_uid = $this->user->getFitbitUid();
 		$repository = $em->getRepository('FitbitOAuth\\ClientBundle\\Entity\\Subscription');
@@ -88,8 +94,9 @@ class FitbitDataHandler {
         	throw new OAuth2\Exception(sprintf("Unable to subscribe to the activity. Message from server: %s ", var_export($response)));
         }
         $subscription->setSubscriptionData($response);
-        $subscription->setStatus(1);
+        $subscription->setStatus(Subscription::STATUS_SUBSCRIBED);
 
+        $this->user->setStatus(User::STATUS_SUBSCRIBED);
         //persist to database;
         $em->flush();
 

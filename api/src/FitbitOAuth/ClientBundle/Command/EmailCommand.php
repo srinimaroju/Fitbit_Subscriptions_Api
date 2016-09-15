@@ -21,10 +21,10 @@ class EmailCommand extends ContainerAwareCommand
         // the short description shown while running "php bin/console list"
         ->setDescription('Sends Email')
         ->addArgument('fitbit_uid', InputArgument::REQUIRED, 'The fitbit uid of the user')
-        
+        ->addArgument('type',       InputArgument::REQUIRED, 'welcome or greeting')
         // the full command description shown when running the command with
         // the "--help" option
-        ->setHelp("This command allows you to send email via fitbit uid");
+        ->setHelp("This command allows you to send a welcome email via fitbit uid");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -35,16 +35,31 @@ class EmailCommand extends ContainerAwareCommand
 	        '============',
 	        '',
 	    ]);
+
+	    $type =  $input->getArgument('type');
+	    $function = "send".ucfirst($type)."Email";
 	    $handler = $this->getContainer()->get("email_handler");
 	    $em=$this->getContainer()->get('doctrine')->getManager();
 	    
 	    $repository = $em->getRepository('FitbitOAuth\\ClientBundle\\Entity\\User');
 	    $fitbit_uid = $input->getArgument('fitbit_uid');
 	    $user=$repository->findOneBy(array('fitbit_uid'=>$fitbit_uid));
-	    //$output->writeln(var_export($user));
-	    $handler->sendTestEmail($user);
+	    
+	    if($user->getEmail()=="") {
+	    	$logger->error("No email address for $fitbit_uid");
+	    	$output->writeln("No email address for $fitbit_uid");
+	    	return;
+	    }
+
+	    $handler->$function($user);
+	    $logger = $this->getContainer()->get('logger');
 	    // outputs a message followed by a "\n"
-	    $output->writeln('Email sent to '.$user->getEmail());
+	    $logger->info("$type Email sent to ".$user->getEmail());
+	    $output->writeln("$type Email sent to ".$user->getEmail());
 	    
 	}
+	protected function generateQuote() {
+		return "Insert quote here";
+	}
+
 }

@@ -39,11 +39,14 @@ class Subscription
     /** @ORM\Column(type="integer", name="status", nullable=true) */
     private $status;
   
+    const STATUS_ATTEMPED      = 0;
+    const STATUS_SUBSCRIBED    = 1;
+    const STATUS_UNSUBSCRIBED  = 2;
 
     public function __construct($fitbit_uid, $activity) {
         $this->fitbit_uid = $fitbit_uid;
         $this->activity = $activity;
-        $this->status = 0;
+        $this->status = self::STATUS_ATTEMPED;
     }
     /**
      * @ORM\PreUpdate

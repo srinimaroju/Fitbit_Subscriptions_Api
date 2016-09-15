@@ -40,6 +40,17 @@ class User implements UserInterface, EquatableInterface, \Serializable
     private $user_profile_data;
 
 
+    /** @ORM\Column(type="integer", name="status", nullable=true) */
+    private $status;
+
+    const STATUS_CONNECTED           = 0;
+    const STATUS_SUBSCRIBED          = 1;
+    const STATUS_EMAIL_PROCESSED     = 2;
+    const STATUS_UNSUBSCRIBED        = 3;
+
+    public function __construct() {
+        $this->status = self::STATUS_CONNECTED;
+    }
     /**
      * Get uid
      *
@@ -250,5 +261,14 @@ class User implements UserInterface, EquatableInterface, \Serializable
             $this->id,
             $this->fitbit_uid,
         ) = unserialize($serialized);
+    }
+
+    public function getStatus() {
+        return $this->status;
+    }
+
+    public function setStatus($status) {
+        $this->status = $status;
+        return $this;
     }
 }

@@ -1,12 +1,21 @@
 Good Morning {{ name }},<br/><br/>
 
-Here's how you slept last night<br/>
-{{ insert data here }}
+{% if sleep %}
+	Looks like you've got {{ sleep }} hours of sleep last night. 
+	{% if sleep > 7 %}
+		:-) Well Done!!<Br/><Br/>
+	{% else %}
+		Not enough :-( Get some coffee!!<br/><Br/>
+	{% endif %}
+{% endif %}
 
 Did you know this? <br/>
-{{ quote here }}<br/><Br/><Br/>
+{{ quote }}<br/><Br/><Br/>
 
 
 Have a wonderful Day.<Br/><Br/>
+
+Regards,<br>
+Morning Mocha Team<br/><Br/>
 
 To unsubscribe via 2 step process click here 
