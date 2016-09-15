@@ -75,23 +75,22 @@ class BatchEmailCommand extends ContainerAwareCommand
 		    if($user->getEmail()=="") {
 		    	$logger->error("No email address for ".$fitbit_uid);
 		    	$output->writeln("No email address for ".$fitbit_uid);
-		    	continue;
-		    }
-		    try {
-		    	$response = $handler->sendWelcomeEmail($user);
-		    	if($response) {
-			    	$user->setStatus(User::STATUS_EMAIL_PROCESSED);
-				    $message = "Welcome Email sent to ".$user->getEmail();
-			    } else {
+		    } else {
+			    try {
+			    	$response = $handler->sendWelcomeEmail($user);
+			    	if($response) {
+				    	$user->setStatus(User::STATUS_EMAIL_PROCESSED);
+					    $message = "Welcome Email sent to ".$user->getEmail();
+				    } else {
+				    	$user->setStatus(User::STATUS_EMAIL_FAILED);
+				    	$message = "Failed sending welcome Email to ".$user->getEmail();
+				    }
+			    }
+			    catch(Exception $e) {
 			    	$user->setStatus(User::STATUS_EMAIL_FAILED);
-			    	$message = "Failed sending welcome Email to ".$user->getEmail();
+			    	$message = "Exception sending welcome Email to ".$user->getEmail(). " with message". $e->getMessage();
 			    }
 		    }
-		    catch(Exception $e) {
-		    	$user->setStatus(User::STATUS_EMAIL_FAILED);
-		    	$message = "Exception sending welcome Email to ".$user->getEmail(). " with message". $e->getMessage();
-		    }
-		    
 		    
 		    $logger->info($message);
 			$output->writeln($message);
@@ -132,27 +131,27 @@ class BatchEmailCommand extends ContainerAwareCommand
 			  //  $notification->setStatus(Notification::STATUS_FAILED_PROCESSING);
 		    	$logger->error("No email address for ".$fitbit_uid);
 		    	$output->writeln("No email address for ".$fitbit_uid);
-		    	continue;
-		    }
-		    try {
-		    	$response = $handler->sendGreetingEmail($user);
-		    	if($response) {
-			    	$notification->setStatus(Notification::STATUS_PROCESSED);
-				    $message = "Greeting Email sent to ".$user->getEmail();
-			    } else {
-			    	$notification->setStatus(Notification::STATUS_FAILED_PROCESSING);
-			    	$message = "Failed sending greeting Email to ".$user->getEmail();
+		    } else {
+			    try {
+			    	$response = $handler->sendGreetingEmail($user);
+			    	if($response) {
+				    	$notification->setStatus(Notification::STATUS_PROCESSED);
+					    $message = "Greeting Email sent to ".$user->getEmail();
+				    } else {
+				    	$notification->setStatus(Notification::STATUS_FAILED_PROCESSING);
+				    	$message = "Failed sending greeting Email to ".$user->getEmail();
+				    }
 			    }
-		    }
-		    catch(Exception $e) {
-		    	$notification->setStatus(Notification::STATUS_FAILED_PROCESSING);
-		    	$message = "Exception sending greeting Email to ".$user->getEmail(). " with message". $e->getMessage();
-		    }
-		    
-		    
-		    $logger->info($message);
-			$output->writeln($message);
-			$em->flush();
+			    catch(Exception $e) {
+			    	$notification->setStatus(Notification::STATUS_FAILED_PROCESSING);
+			    	$message = "Exception sending greeting Email to ".$user->getEmail(). " with message". $e->getMessage();
+			    }
+			    
+			    
+			    $logger->info($message);
+				$output->writeln($message);
+				$em->flush();
+			}
 	    }
 	}
 
