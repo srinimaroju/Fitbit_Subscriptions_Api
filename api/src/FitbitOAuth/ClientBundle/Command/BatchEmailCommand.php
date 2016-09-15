@@ -129,7 +129,7 @@ class BatchEmailCommand extends ContainerAwareCommand
 		    $handler = $this->getContainer()->get("email_handler");
 		    
 		    if($user->getEmail()=="") {
-			    $notification->setStatus(Notification::STATUS_FAILED_PROCESSING);
+			  //  $notification->setStatus(Notification::STATUS_FAILED_PROCESSING);
 		    	$logger->error("No email address for ".$fitbit_uid);
 		    	$output->writeln("No email address for ".$fitbit_uid);
 		    	continue;

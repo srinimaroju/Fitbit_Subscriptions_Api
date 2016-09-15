@@ -23,3 +23,10 @@ php bin/console -vvv -e'dev' app:process-batch-email welcome
  git pull
  php bin/console cache:clear --env=prod
  chmod 777 -R /usr/share/nginx/html/fitbit/api/var/cache/prod/
+
+
+ Testing webhook notify
+ curl -v -i \
+    -H "Content-Type: application/json" \
+    -X POST -d  '[{"collectionType":"sleep","date":"2016-09-13","ownerId":"2DSK6Y","ownerType":"user","subscriptionId":"1"}]' \
+    http://localhost:8000/webhook/notify
