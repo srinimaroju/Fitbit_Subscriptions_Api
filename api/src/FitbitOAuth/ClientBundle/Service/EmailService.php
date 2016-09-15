@@ -38,12 +38,6 @@ class EmailService {
                           );
 
             $response = $this->container->get('mailer')->send($message);
-            if($response) {
-                $user->setStatus(User::STATUS_EMAIL_PROCESSED);
-                $this- >container()->getDoctrine()->getManager()->flush();
-            } else {
-                 throw new Exception("Error sending email to $email with message: ".$e->getMessage());
-            }
             return $response;
         } catch(Exception $e) {
             throw new Exception("Error sending email to $email with message: ".$e->getMessage());

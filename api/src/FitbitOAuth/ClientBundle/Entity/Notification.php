@@ -32,6 +32,7 @@ class Notification
 
     const STATUS_RECEIVED  = 0;
     const STATUS_PROCESSED = 1;
+    const STATUS_FAILED_PROCESSING = 2;
     
     public function __construct($fitbit_uid, $notification_data) {
         $this->fitbit_uid = $fitbit_uid;

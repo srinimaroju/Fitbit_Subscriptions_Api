@@ -15,6 +15,9 @@ Or
 Generate entities
  php bin/console doctrine:generate:entities FitbitOAuth/ClientBundle
 
+Run Cron
+php bin/console -vvv -e'dev' app:process-batch-email greeting
+php bin/console -vvv -e'dev' app:process-batch-email welcome
 
  Deployment instructions
  git pull

@@ -47,6 +47,7 @@ class User implements UserInterface, EquatableInterface, \Serializable
     const STATUS_SUBSCRIBED          = 1;
     const STATUS_EMAIL_PROCESSED     = 2;
     const STATUS_UNSUBSCRIBED        = 3;
+    const STATUS_EMAIL_FAILED        = 5;
 
     public function __construct() {
         $this->status = self::STATUS_CONNECTED;

@@ -24,6 +24,7 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
             ->getQuery()
             ->getOneOrNullResult();
     }
+
     
     public function loadUserByUsername($uid) {
         return $this->createQueryBuilder('u')
