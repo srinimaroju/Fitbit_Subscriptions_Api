@@ -1,0 +1,16 @@
+#################
+## Sublime Text
+#################
+
+*.sublime-project
+*.sublime-workspace
+
+#################
+## Directories
+#################
+node_modules/
+npm-debug.log
+typings/
+app/*.js
+app/*.map
+app/js/

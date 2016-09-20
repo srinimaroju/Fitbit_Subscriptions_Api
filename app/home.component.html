@@ -1,0 +1,27 @@
+<div class="site-wrapper-inner">
+	<div class="cover-container">
+		<div class="masthead clearfix">
+			<div class="inner">
+				<h3 class="masthead-brand">Hello Athelete!</h3>
+				<nav>
+				<ul class="nav masthead-nav">
+				<li class="active"><a href="#">Home</a></li>
+				<li><a routerLink="/features" routerLinkActive="active" href="/features">Features</a></li>
+				<li><a href="#">Contact</a></li>
+				</ul>
+				</nav>
+				</div>
+			</div>
+			<div class="inner cover">
+				<h1 class="cover-heading">Start your morning with a smile</h1>
+				<p class="lead">Subscribe here to receive a daily wake up greeting.</p>
+				<p class="lead">
+				<a href="#" *ngIf="!authService.loggedIn()" (click)="redirectToSubscribe()" class="btn btn-lg btn-default">Connect FitBit</a>
+				<a href="#" *ngIf="authService.loggedIn()" class="btn btn-lg btn-default">Subscribe via email</a>
+				</p>
+			</div>
+		<div class="mastfoot">
+			Use at your own risk**
+		</div>
+	</div>
+</div>

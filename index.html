@@ -1,5 +1,7 @@
 <html>
   <head>
+    <!-- Set the base href -->
+    <base href="/">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,18 +22,17 @@
     <link rel="stylesheet" href="app/css/cover.css">
 
     <!-- 1. Load libraries -->
-    <!-- IE required polyfill -->
-    <script src="node_modules/es6-shim/es6-shim.min.js"></script>
-    <script src="node_modules/angular2/es6/dev/src/testing/shims_for_IE.js"></script>   
+     <!-- Polyfill(s) for older browsers -->
+    <script src="node_modules/core-js/client/shim.min.js"></script>
+    <script src="node_modules/zone.js/dist/zone.js"></script>
+    <script src="node_modules/reflect-metadata/Reflect.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <!-- 2. Configure SystemJS -->
+    <script src="systemjs.config.js"></script>
 
-    <script src="node_modules/angular2/bundles/angular2-polyfills.js"></script>
-    <script src="node_modules/rxjs/bundles/Rx.umd.js"></script>
-    <script src="node_modules/angular2/bundles/angular2-all.umd.js"></script>
-
-    <!-- 2. Load our 'modules' -->
-    <script src='app/app.component.js'></script>
-    <script src='app/main.js'></script>
-
+    <script>
+      System.import('app');//.catch(function(err){ console.error(err); });
+    </script>
   </head>
 
   <!-- 3. Display the application -->
@@ -40,42 +41,9 @@
       
 
     <div class="site-wrapper">
-      <div class="site-wrapper-inner">
-
-        <div class="cover-container">
-
-          <div class="masthead clearfix">
-            <div class="inner">
-              <h3 class="masthead-brand">Hello Athelete!</h3>
-              <nav>
-                <ul class="nav masthead-nav">
-                  <li class="active"><a href="#">Home</a></li>
-                  <li><a href="#">Features</a></li>
-                  <li><a href="#">Contact</a></li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-
-          <div class="inner cover">
-            <h1 class="cover-heading">Loading...!</h1>
-            <p class="lead">Subscribe here to receive a daily wake up greeting.</p>
-            <p class="lead">
-              <a href="#" class="btn btn-lg btn-default">Connect FitBit</a>
-            </p>
-            <p class="lead">
-              <a href="#" class="btn btn-lg btn-default">Connect Facebook</a>
-            </p>
-          </div>
-
-          <div class="mastfoot">
-            Use at your own risk**
-          </div>
-
-        </div>
-
-      </div>
-
+      <my-app>
+       Loading...!
+     </my-app>
     </div>
 
     <!-- 
@@ -85,8 +53,6 @@
      Include all compiled plugins (below), or include individual files as needed 
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
    -->
-
-
 
   </body>
 

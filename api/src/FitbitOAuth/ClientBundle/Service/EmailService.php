@@ -54,7 +54,7 @@ class EmailService {
             $quote =  $this->getRandomQuote();
             //print_r($sleep_data); exit;
             $message = \Swift_Message::newInstance()
-                        ->setSubject('Welcome to Morning Mocha')
+                        ->setSubject('Good Morning!')
                         ->setFrom($this->from_address)
                         ->setTo($email)
                         ->setContentType("text/html")
