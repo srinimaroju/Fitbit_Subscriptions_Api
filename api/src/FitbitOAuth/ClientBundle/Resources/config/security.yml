@@ -23,7 +23,7 @@ security:
             simple_preauth:
                 authenticator: fitbit_jwt_authenticator
             provider: fitbit_user_loader
-            methods: [GET, POST]
+            methods: [GET, POST, OPTIONS]
     access_control:
        # - { path: ^/api/unsecure, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/user/, roles: ROLE_API }

@@ -17,6 +17,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
             new FitbitOAuth\ClientBundle\FitbitOAuthClientBundle(),
+            new Nelmio\CorsBundle\NelmioCorsBundle(),
             new Auth0\JWTAuthBundle\JWTAuthBundle(),
         ];
 

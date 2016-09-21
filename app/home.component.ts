@@ -7,8 +7,7 @@ import { AuthService } from './auth.service';
 import {WindowRef} from './WindowRef';
 
 @Component({
-  templateUrl: 'app/home.component.html' ,
-  providers: [AuthService, WindowRef]
+  templateUrl: 'app/home.component.html'
 })
 export class HomeComponent { 
   constructor(private authService: AuthService, private location:Location,
@@ -19,4 +18,5 @@ export class HomeComponent {
     //console.log('Window object', this.window.nativeWindow);
     this.window.nativeWindow.location.href = "http://pavans-world.com/fitbit/api/subscribe";
   }
+
 }

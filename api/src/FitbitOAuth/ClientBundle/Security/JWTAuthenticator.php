@@ -28,9 +28,16 @@ class JWTAuthenticator implements SimplePreAuthenticatorInterface,Authentication
     public function createToken(Request $request, $providerKey)
     {
         // look for an authorization header
-        //$authorizationHeader = $request->headers->get('Authorization');
-        $jwt = $request->query->get('jwt');
-        
+        $jwt = null;
+        if($request->headers->get('Authorization')) {
+             $authorizationHeader = $request->headers->get('Authorization');
+             // extract the JWT
+             $jwt = str_replace('Bearer ', '', $authorizationHeader);
+        }
+       
+        if($request->query->get('jwt')) {
+            $jwt = $request->query->get('jwt');
+        }
         if ($jwt == null) {
             return new PreAuthenticatedToken(
                 'anon.',

@@ -18,3 +18,8 @@ services:
     email_handler:
         class: FitbitOAuth\ClientBundle\Service\EmailService
         arguments: ['@service_container','%mailer_from_address%']
+    
+    #app.cors_listener:
+    #    class: FitbitOAuth\ClientBundle\Listener\CorsListener
+    #    tags:
+    #        - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }

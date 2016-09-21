@@ -2,6 +2,7 @@ import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { FeaturesComponent }    from './features.component';
 import { HomeComponent }    from './home.component';
+import { CallbackComponent }    from './callback.component';
 
 const appRoutes: Routes = [
   {
@@ -11,6 +12,10 @@ const appRoutes: Routes = [
   {
     path: 'features',
     component: FeaturesComponent
+  },
+  {
+  	path:'login',
+  	component: CallbackComponent
   }
 ];
 

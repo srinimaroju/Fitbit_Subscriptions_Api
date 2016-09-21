@@ -25,15 +25,9 @@ class SecuredController extends Controller
     public function getProfileAction(Request $request)
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        //print_r($user->getLastUpdatedAt());
-        $user_details['profile'] = $user->getUserProfileData();
-        $user_details['email'] = $user->getEmail();
-      
-        if ($user_details === null) {
-            $username = 'ANONYMOUS';
-        } else {
-            $username = $user_details['profile']->displayName;
-        }
+
+        $user_details = $user->getUserProfileData();
+        $user_details->email = $user->getEmail();
 
         return new JsonResponse(array('result' => $user_details));
     }
