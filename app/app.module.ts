@@ -16,7 +16,7 @@ import { WindowRef } from './WindowRef';
 @NgModule({
   imports: [ BrowserModule, routing, HttpModule, JsonpModule ],
   declarations: [ AppComponent, FeaturesComponent, HomeComponent, CallbackComponent ],
-  providers: [ AUTH_PROVIDERS, AuthService,  WindowRef,
+  providers: [ AUTH_PROVIDERS, WindowRef,
 				  provideAuth({
 				    //tokenGetter: AuthService.getToken,
 				    globalHeaders: [{'Content-Type':'application/json'}],

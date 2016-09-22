@@ -7,20 +7,22 @@ import 'rxjs/add/operator/map';
 
 @Component({
   template:`<p>Dashboard</p>
-		    <p>Session ID: {{ jwt  }}</p>
+		    <p>Logging In..!!!! {{ jwt }}</p>
 		    <a id="anchor"></a>
-			`
+			`,
+   providers: [AuthService]
 })
 
 export class CallbackComponent implements OnInit { 
   jwt:  Observable<string>;
 
-  constructor(private route: ActivatedRoute, private authService: AuthService) { 
+  constructor(private router: Router,private route: ActivatedRoute, private authService: AuthService) { 
   	
   }
   
   ngOnInit() {
     // Capture the session ID if available
+    console.log("initing callback component");
    this.route
       .queryParams
       .map(params => params['jwt'] || null)
@@ -28,6 +30,7 @@ export class CallbackComponent implements OnInit {
           data => {
             this.jwt = data;
             this.authService.login(data);
+            this.router.navigate(['']);
           }
        );
 

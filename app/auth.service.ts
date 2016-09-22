@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { tokenNotExpired, AuthHttp } from 'angular2-jwt';
+import { tokenNotExpired, AuthHttp,AuthHttpError } from 'angular2-jwt';
 import { Headers, Http, Response } from '@angular/http';
 import { Router } from '@angular/router';
 import { Observable }         from 'rxjs/Observable';
+
 import 'rxjs/add/operator/toPromise';
 
 import { User } from './user';
@@ -11,7 +12,7 @@ import { User } from './user';
 export class AuthService {
 
   public user: User;
-  private endpoint='http://localhost:8000';
+  private endpoint             = 'http://localhost:8000';
 
   private subscribeUrl         = '/subscribe';
   private profileUrl           = '/user/get/profile';
@@ -19,20 +20,16 @@ export class AuthService {
   private sleepSubscribeUrl    = '/user/subscribe/sleep';
 
   constructor(private http: Http, private authHttp: AuthHttp) {
-    this.user = null;
+    console.log("initing auth service");
+    //this.user = null;
   }
 
-  login(jwt: Observable<string>) {
-    jwt.subscribe(
-          data => {
-            localStorage.setItem('id_token', data);
-
-            //Once logged in update user profile
-            this.getProfile();
-          }
-        );
-
-    
+  login(jwt: string) {
+    console.log("logging in");
+    localStorage.setItem('id_token', jwt);
+    console.log("local storage set");
+    //Once logged in update user profile
+    //return this.getProfile();
   }
 
   logout() {
@@ -43,7 +40,8 @@ export class AuthService {
   }
 
   getToken() {
-    console.log("called");
+    localStorage.getItem('id_token');
+    console.log("called get token");
   }
 
   subscribeToEmail(email) {
@@ -73,29 +71,27 @@ export class AuthService {
             );
   }
 
-  getProfile(){
-    return this.authHttp.
-           get(this.endpoint + this.profileUrl)
-            .subscribe(
-              data => 
-                {
-                      this.user = data.json().result; 
-                      if(this.user.displayName) {
-                        console.log(this.user);
-                        //this.subscribeToSleep();
-                      }
-                },
-              err => this.handleError,
-              () => console.log('Request Complete')
-            );
+  getProfile (): Observable<User>  {
+    console.log("getting profile");
+    return this.authHttp.get(this.endpoint + this.profileUrl)
+                    .map(this.extractData);
+  }
+
+  private extractData(res: Response) {
+    let body = res.json();
+    return body.result || { };
   }
 
   loggedIn() {
     return tokenNotExpired();
   }
 
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error); // for demo purposes only
-    return Promise.reject(error.message || error);
+   private handleError (error: any) {
+    // In a real world app, we might use a remote logging infrastructure
+    // We'd also dig deeper into the error to get a better message
+    let errMsg = (error.message) ? error.message :
+      error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+    console.error(errMsg); // log to console instead
+    return Promise.reject(errMsg);
   }
 }
