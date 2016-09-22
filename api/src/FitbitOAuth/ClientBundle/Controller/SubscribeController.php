@@ -25,8 +25,14 @@ class SubscribeController extends Controller
          $logger = $this->get('logger');
         $oauth_client = $this->get("fitbit_oauth_client");
 
+
         if (!$request->query->get('code')) {
-            return new RedirectResponse($oauth_client->getAuthenticationUrl());
+            $params = null;
+            if($request->query->get('state')) {
+                $params = $request->query->get('state');
+            }
+            $destination = $oauth_client->getAuthenticationUrl($params);
+            return new RedirectResponse($destination);
         } else{
             if($request->query->get('get_code')) {
                 return "code is ".$request->query->get('code');
@@ -61,7 +67,7 @@ class SubscribeController extends Controller
                 //Get user profile info
                 $fitbitHandler = new FitbitDataHandler($user, $oauth_client);
                 $user->setUserProfileData($fitbitHandler->getUserProfileData());
-                print_r($user->getUserProfileData());
+                //print_r($user->getUserProfileData());
                 //persist to database
                 $em->flush();
                 
@@ -70,9 +76,22 @@ class SubscribeController extends Controller
                 $jwt_service = $this->get("fitbit_jwt_token_service");
                 $jwt = $jwt_service->generateJWT(array('user_id'=>$user->getUid()));
 
-                $return_response = new Response('Saved new product with id '.$user->getUid()." and jwt $jwt");
                 $logger->info("Create jwt $jwt for user id $uid and returned");
-                $return_response->headers->set("X-JWT-Auth","$jwt");
+                
+                if($request->query->get('state')) {
+                    $destination = $request->query->get('state');
+
+                    $query = "jwt=$jwt";
+
+                    $separator    = (strpos($destination, "?")) ? '&' : '?';
+                    $destination .= $separator . $query;
+                    $return_response =  new RedirectResponse($destination);
+
+                } else {
+                    $result = array('user'=>$user,'message'=>'Saved new product with id '.$user->getUid()." and jwt $jwt");
+                    $return_response = new JsonResponse($result);
+                    //$return_response->headers->set("X-JWT-Auth","$jwt");
+                }
                 return $return_response;
 
             } else {

@@ -35,8 +35,11 @@ class FitbitOAuth2Client
         $this->params = $params;
     }
     
-    public function getAuthenticationUrl() {
+    public function getAuthenticationUrl($state) {
         $params = array("scope" => $this->params);
+        if($state) {
+            $params['state'] = $state;
+        }
         return $this->client->getAuthenticationUrl($this->authEndpoint, $this->redirectUrl,  $params);
     }
 
