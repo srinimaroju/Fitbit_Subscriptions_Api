@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit {
                        data => {
                        	 this.user = data;
                        	 console.log(this.user);
-                         this.dummyUser = Object.assign({}, this.user);
+                         this.dummyUser = (<any>Object).assign({}, this.user);
                        },
                        error=> this.handleError
                 );
