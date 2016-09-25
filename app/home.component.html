@@ -3,12 +3,8 @@
 	<h1 class="cover-heading">Start your morning with a smile</h1>
 	<p class="lead">Subscribe here to receive a daily wake up greeting.</p>
 
-
-
 	<p class="lead">
-	<a href="#" *ngIf="!authService.loggedIn()" (click)="redirectToSubscribe()" class="btn btn-lg btn-default">Connect FitBit</a>
-	<a href="#" *ngIf="authService.loggedIn()" (click)="authService.getProfile()" class="btn btn-lg btn-default">Get Profile</a>
-	<a href="#" *ngIf="authService.loggedIn()" class="btn btn-lg btn-default">Subscribe via email</a>
+	<a href="#" (click)="redirectToSubscribe()" class="btn btn-lg btn-default">Connect FitBit</a>
 	</p>
 </div>	
 
@@ -20,12 +16,25 @@
 	</p>
 	<div *ngIf="!this.user.email"> 
 		<p class="lead">
-			You are currently receiving notifications at {{ user.email }}
+			Enter your email and you're all set to make your mornings great!
 		</p>
-		<p class="lead">
-			<a href="#" (click)="authService.getProfile()" class="btn btn-lg btn-default">Get Profile</a>
-			<a href="#" class="btn btn-lg btn-default">Subscribe via email</a>
-		</p>
+		
+		<form *ngIf="active" (ngSubmit)="onSubmit()" #emailForm="ngForm">
+	      <div class="form-group">
+	        <input id="email" type="email" class="form-control" 
+	               [(ngModel)]="this.dummyUser.email" name="email"
+	               pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                   #email="ngModel" id="email" required>
+            <div [hidden]="email.valid || email.pristine" 
+	             class="alert alert-danger">
+	           <p *ngIf="email.errors && email.errors.required">Email is required.</p>
+               <p *ngIf="email.errors && email.errors.pattern">Email format is invalid.</p>
+        	</div>
+	      </div>
+	      <button type="submit" 
+	      		[disabled]="!emailForm.form.valid"
+	      		class="btn btn-lg btn-default">Submit Email</button>
+	    </form>
 
 	</div>
 	<a href="#" (click)="authService.logout()" class="btn btn-lg btn-default">Logout</a>

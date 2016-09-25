@@ -47,28 +47,13 @@ export class AuthService {
   subscribeToEmail(email) {
     return this.authHttp.
            get(this.endpoint + this.emailUrl + email)
-            .subscribe(
-              data => 
-                {
-                     console.log("Subscribed to email result:" + data.json());
-                     return this.subscribeToSleep();
-                },
-              err => this.handleError,
-              () => console.log('Request Complete')
-            );
+            .map(this.extractData);
   }
 
   subscribeToSleep() {
     return this.authHttp.
            get(this.endpoint + this.sleepSubscribeUrl )
-            .subscribe(
-              data => 
-                {
-                     console.log(data.json());
-                },
-              err => this.handleError,
-              () => console.log('Request Complete')
-            );
+           .map(this.extractData);
   }
 
   getProfile (): Observable<User>  {
@@ -77,9 +62,16 @@ export class AuthService {
                     .map(this.extractData);
   }
 
-  private extractData(res: Response) {
-    let body = res.json();
-    return body.result || { };
+  private extractData(response: Response) {
+    console.log(response);
+    if (response.status >= 200 && response.status < 300) {
+      let body = response.json();
+      return body.result || { };
+    } else {
+      console.log(response);
+      var error = new Error(response.statusText);
+      throw error;
+    }
   }
 
   loggedIn() {

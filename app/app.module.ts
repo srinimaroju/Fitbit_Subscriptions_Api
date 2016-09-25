@@ -10,11 +10,12 @@ import { CallbackComponent }      from './callback.component';
 import { routing } from './app.routing';
 import { AuthService } from './auth.service';
 import { User } from './user';
+import { FormsModule }   from '@angular/forms';
 
 import { WindowRef } from './WindowRef';
 
 @NgModule({
-  imports: [ BrowserModule, routing, HttpModule, JsonpModule ],
+  imports: [ BrowserModule, routing, HttpModule, JsonpModule, FormsModule ],
   declarations: [ AppComponent, FeaturesComponent, HomeComponent, CallbackComponent ],
   providers: [ AUTH_PROVIDERS, WindowRef,
 				  provideAuth({

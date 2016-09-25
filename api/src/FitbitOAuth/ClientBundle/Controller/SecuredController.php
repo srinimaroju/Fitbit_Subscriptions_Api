@@ -97,7 +97,7 @@ class SecuredController extends Controller
         } else {
             $user->setEmail($email);
             $this->getDoctrine()->getManager()->flush();
-            return new JsonResponse(array('result' => "success"));
+            return new JsonResponse(array('result' => "success","data"=>$user));
         }
     }
     /**
