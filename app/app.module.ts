@@ -11,6 +11,7 @@ import { routing } from './app.routing';
 import { AuthService } from './auth.service';
 import { User } from './user';
 import { FormsModule }   from '@angular/forms';
+import {APP_BASE_HREF} from '@angular/common';
 
 import { WindowRef } from './WindowRef';
 

@@ -12,7 +12,9 @@ import { User } from './user';
 export class AuthService {
 
   public user: User;
-  private endpoint             = 'http://localhost:8000';
+ private endpoint             = 'http://localhost:8000';
+ // private endpoint             = 'http://pavans-world.com/fitbit/api';
+
 
   private subscribeUrl         = '/subscribe';
   private profileUrl           = '/user/get/profile';

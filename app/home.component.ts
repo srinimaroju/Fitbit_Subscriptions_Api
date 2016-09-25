@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router} from '@angular/router';
-import { Location } from '@angular/common';
+import { Location, LocationStrategy } from '@angular/common';
 import { User } from './user';
 import { AuthService } from './auth.service';
 import {Observable} from 'rxjs/Rx';
@@ -24,8 +24,9 @@ export class HomeComponent implements OnInit {
   mode = 'Observable';
 
   constructor(private authService: AuthService, private location:Location,
-              private window: WindowRef) { 
+              private window: WindowRef, private ls:LocationStrategy) { 
   	//console.log(this.authService.get);
+    console.log(ls.getBaseHref());
 
   }
   onSubmit() { 
@@ -72,7 +73,7 @@ export class HomeComponent implements OnInit {
     this.window.nativeWindow.location.href = 
     		this.subscribeEndPoint
     	  + "?state=" 
-    	  +  encodeURIComponent(this.window.nativeWindow.location.origin + "/login");
+    	  +  encodeURIComponent(this.window.nativeWindow.location.origin + this.ls.getBaseHref() + "login");
   }
 
 }

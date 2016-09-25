@@ -23,6 +23,7 @@ php bin/console -vvv -e'dev' app:process-batch-email welcome
  git pull
  php bin/console cache:clear --env=prod
  chmod 777 -R /usr/share/nginx/html/fitbit/api/var/cache/prod/
+ npm install
  npm run tsc:w
 
  Testing webhook notify
