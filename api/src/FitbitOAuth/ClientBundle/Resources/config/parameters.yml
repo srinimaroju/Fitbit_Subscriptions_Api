@@ -28,4 +28,4 @@ parameters:
     mailer_user: 'contactmorningmocha@gmail.com'
     mailer_password: "mrnGMochaPa5sw0rd!23"
     mailer_port: "465"
-    mailer_from_address: 'Morning Mocha "<noreply-morningmocha@gmail.com>"'
+    mailer_from_address: {"noreply-morningmocha@gmail.com":"Morning Mocha"}

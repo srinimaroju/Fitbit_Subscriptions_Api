@@ -13,6 +13,7 @@ use OAuth2;
 use FitbitOAuth\ClientBundle\Entity\User;
 use FitbitOAuth\ClientBundle\Store\FitbitJWT;
 use FitbitOAuth\ClientBundle\Service\FitbitDataHandler;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 class SubscribeController extends Controller
